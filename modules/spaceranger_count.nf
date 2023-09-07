@@ -11,7 +11,7 @@ process SPACERANGER_COUNT {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml", emit: versions
+    path("versions.yml"), emit: versions
     
     when:
     task.ext.when == null || task.ext.when
