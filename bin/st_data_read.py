@@ -48,8 +48,10 @@ def read_visium_mtx(
 
     if load_images:
         # Define paths for the required files
+        tissue_positions_filename = "tissue_positions_list.csv" if (path / "tissue_positions_list.csv").exists() else "tissue_positions.csv"
+
         files = {
-            'tissue_positions_file': path / "tissue_positions.csv",
+            'tissue_positions_file': path / tissue_positions_filename,
             'scalefactors_json_file': path / "scalefactors_json.json",
             'hires_image': path / "tissue_hires_image.png",
             'lowres_image': path / "tissue_lowres_image.png"
