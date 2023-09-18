@@ -16,9 +16,9 @@ process SPACERANGER_COUNT_TO_ANNDATA {
 
     script:
     """
-    read_st_data.py \\
-        --SRCountDir "${meta.id}" \\
-        --outAnnData st_adata_raw.h5ad
+    st_data_read.py \\
+        --SR_count_dir "${meta.id}" \\
+        --out_AnnData st_adata_raw.h5ad
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
