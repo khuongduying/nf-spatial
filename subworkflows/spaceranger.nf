@@ -1,3 +1,7 @@
+//
+// Run Space Ranger count
+//
+
 include { UNTAR as SPACERANGER_UNTAR_REFERENCE } from "../modules/untar.nf"
 include { SPACERANGER_COUNT } from '../modules/spaceranger_count.nf'
 
