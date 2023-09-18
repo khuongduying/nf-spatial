@@ -11,12 +11,12 @@ workflow INPUT_CHECK {
         sep: ','
     ).branch {
         spaceranger: !it.containsKey("spaceranger_dir")  // Entries without 'spaceranger_dir'
-        downstream: it.containsKey("spaceranger_dir")   // Entries with 'spaceranger_dir'
+        downstream: it.containsKey("spaceranger_dir")  // Entries with 'spaceranger_dir'
     }
 
     // Maps each entry from the respective channels into two methods
-    ch_spaceranger_input = ch_st.spaceranger.map{create_channel_spaceranger(it)}
-    ch_downstream_input = ch_st.downstream.map{create_channel_downstream(it)}
+    ch_spaceranger_input = ch_st.spaceranger.map { create_channel_spaceranger(it) }
+    ch_downstream_input = ch_st.downstream.map { create_channel_downstream(it) }
 
     // Emit the outputs from this workflow for further use
     emit:
@@ -27,11 +27,11 @@ workflow INPUT_CHECK {
 // Function to validate and create an input channel for downstream processing
 def create_channel_downstream(LinkedHashMap meta) {
     meta["id"] = meta.remove("sample")  // Renaming 'sample' to 'id'
-    spaceranger_dir = file("${meta.remove('spaceranger_dir')}/**") // Directory with required spaceranger files
+    spaceranger_dir = file("${meta.remove('spaceranger_dir')}/**")  // Directory with required spaceranger files
 
     // Loop over the expected spaceranger files and check their presence
     for (f in Utils.DOWNSTREAM_REQUIRED_SPACERANGER_FILES) {
-        if(!spaceranger_dir*.name.contains(f)) {
+        if (!spaceranger_dir*.name.contains(f)) {
             error "The specified spaceranger output directory doesn't contain the required file `${f}` for sample `${meta.id}`"
         }
     }
@@ -45,15 +45,15 @@ def create_channel_spaceranger(LinkedHashMap meta) {
     meta["id"] = meta.remove("sample")  // Renaming 'sample' to 'id'
     
     // Utility function to fetch a file path from meta and check its existence
-    def get_file_from_meta = {key ->
-         v = meta.remove(key);
-         return v ? file(v) : []
+    def get_file_from_meta = { key ->
+        v = meta.remove(key);
+        return v ? file(v) : []
     }
 
     // Extract and check fastq files
     fastq_dir = meta.remove("fastq_dir")
     fastq_files = file("${fastq_dir}/${meta['id']}*.fastq.gz")
-    if(!fastq_files.size()) {
+    if (!fastq_files.size()) {
         error "No `fastq_dir` specified or no samples found in folder."
     } else {
         log.info "${fastq_files.size()} FASTQ files found for sample ${meta['id']}."
@@ -68,12 +68,12 @@ def create_channel_spaceranger(LinkedHashMap meta) {
     darkimage = get_file_from_meta("darkimage")
 
     check_optional_files = ["manual_alignment", "slidefile", "image", "cytaimage", "colorizedimage", "darkimage"]
-    for(k in check_optional_files) {
-        if(this.binding[k] && !this.binding[k].exists()) {
+    for (k in check_optional_files) {
+        if (this.binding[k] && !this.binding[k].exists()) {
             error "File for `${k}` is specified, but does not exist: ${this.binding[k]}."
         }
     }
-    if(!(image || cytaimage || colorizedimage || darkimage)) {
+    if (!(image || cytaimage || colorizedimage || darkimage)) {
         error "Need to specify at least one of 'image', 'cytaimage', 'colorizedimage', or 'darkimage' in the samplesheet"
     }
 
