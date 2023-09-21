@@ -4,8 +4,8 @@
 //
 
 // Import required modules
-include { ST_SPATIAL_DE } from '../../modules/local/st_spatial_de'
-include { ST_CLUSTERING } from '../../modules/local/st_clustering'
+include { ST_SPATIAL_DE } from '../modules/st_spatial_de'
+include { ST_CLUSTERING } from '../modules/st_clustering'
 
 // Define the ST_POSTPROCESS workflow
 workflow ST_POSTPROCESS {
@@ -38,7 +38,6 @@ workflow ST_POSTPROCESS {
     // It takes as input the report and processed data from the clustering step.
     //
     ST_SPATIAL_DE (
-        report_spatial_de,
         ST_CLUSTERING.out.st_adata_processed
     )
     // Collect version information from the spatial differential expression step

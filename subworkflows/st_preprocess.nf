@@ -3,7 +3,7 @@
 //
 
 // Import the ST_QC_AND_NORMALISATION module
-include { ST_QC_AND_NORMALISATION } from '../../modules/local/st_qc_and_normalisation'
+include { ST_QC_AND_NORMALISATION } from '../modules/st_qc_and_normalisation'
 
 // Define the ST_PREPROCESS workflow
 workflow ST_PREPROCESS {

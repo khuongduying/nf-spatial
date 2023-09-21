@@ -11,11 +11,12 @@ workflow SPACERANGER {
     take:
     ch_st_data // channel: [ val(meta), [ raw st data ] ]
 
+    main:
     // Versions tracking
-    ch_versions = Channel.empty()
+    def ch_versions = Channel.empty()
 
     // Handling reference files
-    ch_reference = Channel.empty()
+    def ch_reference = Channel.empty()
     if (params.spaceranger_reference ==~ /.*\.tar\.gz$/) {
         ref_file = file(params.spaceranger_reference)
         SPACERANGER_UNTAR_REFERENCE([[id: "reference"], ref_file])

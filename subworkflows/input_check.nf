@@ -1,29 +1,3 @@
-workflow INPUT_CHECK {
-    // Inputs for the workflow
-    take:
-    samplesheet
-
-    // Core logic
-    // Reads the samplesheet and splits the CSV by rows. It then categorizes each row
-    // into one of two channels based on the presence of 'spaceranger_dir'
-    ch_st = Channel.from(samplesheet).splitCsv(
-        header: true,
-        sep: ','
-    ).branch {
-        spaceranger: !it.containsKey("spaceranger_dir")  // Entries without 'spaceranger_dir'
-        downstream: it.containsKey("spaceranger_dir")  // Entries with 'spaceranger_dir'
-    }
-
-    // Maps each entry from the respective channels into two methods
-    ch_spaceranger_input = ch_st.spaceranger.map { create_channel_spaceranger(it) }
-    ch_downstream_input = ch_st.downstream.map { create_channel_downstream(it) }
-
-    // Emit the outputs from this workflow for further use
-    emit:
-    ch_spaceranger_input
-    ch_downstream_input
-}
-
 // Function to validate and create an input channel for downstream processing
 def create_channel_downstream(LinkedHashMap meta) {
     meta["id"] = meta.remove("sample")  // Renaming 'sample' to 'id'
@@ -79,4 +53,31 @@ def create_channel_spaceranger(LinkedHashMap meta) {
 
     // Return all validated inputs
     return [meta, fastq_files, image, cytaimage, darkimage, colorizedimage, manual_alignment, slidefile]
+}
+
+workflow INPUT_CHECK {
+    // Inputs for the workflow
+    take:
+    samplesheet
+
+    main:
+    // Core logic
+    // Reads the samplesheet and splits the CSV by rows. It then categorizes each row
+    // into one of two channels based on the presence of 'spaceranger_dir'
+    ch_st = Channel.from(samplesheet).splitCsv(
+        header: true,
+        sep: ','
+    ).branch {
+        spaceranger: !it.containsKey("spaceranger_dir")  // Entries without 'spaceranger_dir'
+        downstream: it.containsKey("spaceranger_dir")  // Entries with 'spaceranger_dir'
+    }
+
+    // Maps each entry from the respective channels into two methods
+    ch_spaceranger_input = ch_st.spaceranger.map { create_channel_spaceranger(it) }
+    ch_downstream_input = ch_st.downstream.map { create_channel_downstream(it) }
+
+    // Emit the outputs from this workflow for further use
+    emit:
+    ch_spaceranger_input
+    ch_downstream_input
 }
