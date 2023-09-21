@@ -4,11 +4,11 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
-include { ST_READ_DATA } from '../modules/local/st_read_data'
-include { INPUT_CHECK } from '../subworkflows/local/input_check'
-include { SPACERANGER } from '../subworkflows/local/spaceranger'
-include { ST_PREPROCESS } from '../subworkflows/local/st_preprocess'
-include { ST_POSTPROCESS } from '../subworkflows/local/st_postprocess'
+include { ST_READ_DATA } from '../modules/st_read_data'
+include { INPUT_CHECK } from '../subworkflows/input_check'
+include { SPACERANGER } from '../subworkflows/spaceranger'
+include { ST_PREPROCESS } from '../subworkflows/st_preprocess'
+include { ST_POSTPROCESS } from '../subworkflows/st_postprocess'
 include { FASTQC } from "../modules/fastqc"
 
 // Spatial transcriptomics workflow
