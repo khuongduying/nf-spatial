@@ -3,8 +3,16 @@ def create_channel_downstream(LinkedHashMap meta) {
     meta["id"] = meta.remove("sample")  // Renaming 'sample' to 'id'
     spaceranger_dir = file("${meta.remove('spaceranger_dir')}/**")  // Directory with required spaceranger files
 
+    DOWNSTREAM_REQUIRED_SPACERANGER_FILES = [
+        "raw_feature_bc_matrix.h5",
+        "tissue_positions.csv",
+        "scalefactors_json.json",
+        "tissue_hires_image.png",
+        "tissue_lowres_image.png"
+    ]
+
     // Loop over the expected spaceranger files and check their presence
-    for (f in Utils.DOWNSTREAM_REQUIRED_SPACERANGER_FILES) {
+    for (f in DOWNSTREAM_REQUIRED_SPACERANGER_FILES) {
         if (!spaceranger_dir*.name.contains(f)) {
             error "The specified spaceranger output directory doesn't contain the required file `${f}` for sample `${meta.id}`"
         }
@@ -26,7 +34,7 @@ def create_channel_spaceranger(LinkedHashMap meta) {
 
     // Extract and check fastq files
     fastq_dir = meta.remove("fastq_dir")
-    fastq_files = file("${fastq_dir}/${meta['id']}*.fastq.gz")
+    fastq_files = files(fastq_dir + "/*${meta['id']}*.fastq.gz")
     if (!fastq_files.size()) {
         error "No `fastq_dir` specified or no samples found in folder."
     } else {

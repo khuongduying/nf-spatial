@@ -2,7 +2,7 @@ process ST_READ_DATA {
     tag "${meta.id}"
     label "process_low"
 
-    container "quay.io/biocontainers/scanpy:1.7.2"
+    container "docker.io/gcfntnu/scanpy:1.9.2"
 
     input:
     tuple val (meta), path("${meta.id}/*")

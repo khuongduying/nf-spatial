@@ -30,6 +30,10 @@ workflow SPACERANGER {
     ch_probeset = params.spaceranger_probeset ? 
                   file(params.spaceranger_probeset, checkIfExists: true) : 
                   Channel.empty()
+    
+    println(ch_st_data)
+    println(ch_reference)
+    println(ch_probeset)
 
     // Running Space Ranger count
     SPACERANGER_COUNT(ch_st_data, ch_reference, ch_probeset)

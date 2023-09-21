@@ -2,7 +2,7 @@ process FASTQC {
     tag "${meta.id}"
     label 'process_medium'
 
-    container "quay.io/biocontainers/fastqc:0.12.1"
+    container "quay.io/biocontainers/fastqc:0.12.1--hdfd78af_0"
 
     input:
     tuple val(meta), path(reads)
