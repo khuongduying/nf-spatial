@@ -4,7 +4,7 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
-include { ST_READ_DATA } from '../modules/st_read_data'
+include { SPACERANGER_COUNT_TO_ANNDATA } from '../modules/st_read_data'
 include { INPUT_CHECK } from '../subworkflows/input_check'
 include { SPACERANGER } from '../subworkflows/spaceranger'
 include { ST_PREPROCESS } from '../subworkflows/st_preprocess'
