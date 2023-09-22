@@ -33,7 +33,6 @@ workflow ST {
     )
     DOWNSTREAM_REQUIRED_SPACERANGER_FILES = [
         "raw_feature_bc_matrix.h5",
-        "tissue_positions.csv",
         "scalefactors_json.json",
         "tissue_hires_image.png",
         "tissue_lowres_image.png"
@@ -41,7 +40,9 @@ workflow ST {
     ch_versions = ch_versions.mix(SPACERANGER.out.versions)
     ch_downstream_input = INPUT_CHECK.out.ch_downstream_input.concat(SPACERANGER.out.sr_dir).map {
         meta, outs -> [meta, outs.findAll { it -> 
-            DOWNSTREAM_REQUIRED_SPACERANGER_FILES.contains(it.name) 
+            // Checking for either "tissue_positions.csv" or "tissue_positions_list.csv"
+            DOWNSTREAM_REQUIRED_SPACERANGER_FILES.contains(it.name) || 
+            ["tissue_positions.csv", "tissue_positions_list.csv"].contains(it.name)
         }]
     }
 
