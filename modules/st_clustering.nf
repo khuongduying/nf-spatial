@@ -9,7 +9,6 @@ process ST_CLUSTERING {
 
     output:
     tuple val(meta), path("st_adata_processed.h5ad"), emit: st_adata_processed
-    tuple val(meta), path("st_clustering.html"), emit: html
     path("versions.yml"), emit: versions
 
     when:

@@ -32,7 +32,6 @@ workflow ST_PREPROCESS {
     emit:
     st_data_norm  = ST_QC_AND_NORMALISATION.out.st_data_norm  // Normalized data
     st_data_plain = ST_QC_AND_NORMALISATION.out.st_data_plain // Data without normalization
-    st_html       = ST_QC_AND_NORMALISATION.out.html          // QC and normalization HTML report
     versions      = ch_versions                               // Software versions used
 
 } // End of ST_PREPROCESS workflow

@@ -93,7 +93,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Read Visium data
-    st_adata = read_visium_mtx(args.SRCountDir, library_id=None, load_images=True)
+    st_adata = read_visium_mtx(args.SR_count_dir, library_id=None, load_images=True)
 
     # Write raw AnnData to file
-    st_adata.write(args.outAnnData)
+    st_adata.write(args.out_AnnData)

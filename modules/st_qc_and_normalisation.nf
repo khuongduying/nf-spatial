@@ -10,7 +10,6 @@ process ST_QC_AND_NORMALISATION {
     output:
     tuple val(meta), path("st_adata_norm.h5ad"), emit: st_data_norm
     tuple val(meta), path("st_adata_plain.h5ad"), emit: st_data_plain
-    tuple val(meta), path("st_qc_and_normalisation.html"), emit: html
     path("versions.yml"), emit: versions
 
     when:
@@ -19,12 +18,12 @@ process ST_QC_AND_NORMALISATION {
     script:
     """
     st_qc_and_normalisation.py \\
-        --raw-adata ${st_raw} \\
-        --min-counts ${params.st_preprocess_min_counts} \\
-        --min-genes ${params.st_preprocess_min_genes} \\
-        --min-cells ${params.st_preprocess_min_cells} \\
-        --data-plain-name st_adata_plain.h5ad \\
-        --data-norm-name st_adata_norm.h5ad
+        --raw_adata ${st_raw} \\
+        --min_counts ${params.st_preprocess_min_counts} \\
+        --min_genes ${params.st_preprocess_min_genes} \\
+        --min_cells ${params.st_preprocess_min_cells} \\
+        --data_plain_name st_adata_plain.h5ad \\
+        --data_norm_name st_adata_norm.h5ad
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
