@@ -5,16 +5,17 @@ def create_channel_downstream(LinkedHashMap meta) {
 
     DOWNSTREAM_REQUIRED_SPACERANGER_FILES = [
         "raw_feature_bc_matrix.h5",
-        "tissue_positions.csv",
+        "tissue_positions.*\\.csv",  // Match any variation of 'tissue_positions.csv'
         "scalefactors_json.json",
         "tissue_hires_image.png",
         "tissue_lowres_image.png"
     ]
 
-    // Loop over the expected spaceranger files and check their presence
+    // Loop over the expected spaceranger files and check their presence using regex
     for (f in DOWNSTREAM_REQUIRED_SPACERANGER_FILES) {
-        if (!spaceranger_dir*.name.contains(f)) {
-            error "The specified spaceranger output directory doesn't contain the required file `${f}` for sample `${meta.id}`"
+        def pattern = ~/.*${f}/
+        if (!spaceranger_dir*.name.find { name -> name =~ pattern }) {
+            error "The specified spaceranger output directory doesn't contain the required file '${f}' for sample '${meta.id}'"
         }
     }
 
